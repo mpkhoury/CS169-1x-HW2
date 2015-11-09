@@ -12,7 +12,6 @@ class MoviesController < ApplicationController
 
   def index
     @movies = Movie.all
-    p params[:sort_by]
     case params[:sort_by]
     when 'title'
       @movies.order!('title asc')
@@ -48,5 +47,10 @@ class MoviesController < ApplicationController
     flash[:notice] = "Movie '#{@movie.title}' deleted."
     redirect_to movies_path
   end
+
+  def find_class(header)
+    params[:sort_by] == header ? 'hilite' : ""
+  end
+  helper_method :find_class
 
 end

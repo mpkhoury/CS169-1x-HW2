@@ -11,7 +11,11 @@ class MoviesController < ApplicationController
   end
 
   def index
+    
     @movies = Movie.all
+    @all_ratings = Movie.get_rating_list
+    @movies.where!(rating: params[:ratings].keys) if !params[:ratings].nil?
+    
     case params[:sort_by]
     when 'title'
       @movies.order!('title asc')
@@ -52,5 +56,11 @@ class MoviesController < ApplicationController
     params[:sort_by] == header ? 'hilite' : ""
   end
   helper_method :find_class
+
+  def check_box_setup(rating)
+    false
+    #code here!
+  end
+  helper_method :check_box_setup
 
 end

@@ -14,7 +14,10 @@ class MoviesController < ApplicationController
     
     @movies = Movie.all
     @all_ratings = Movie.get_rating_list
-    @movies.where!(rating: params[:ratings].keys) if !params[:ratings].nil?
+    
+    session[:filtered_rating] = params[:ratings] if !params[:ratings].nil?
+    
+    @movies.where!(rating: session[:filtered_rating].keys) if !session[:filtered_rating].nil?
     
     case params[:sort_by]
     when 'title'
@@ -58,8 +61,7 @@ class MoviesController < ApplicationController
   helper_method :find_class
 
   def check_box_setup(rating)
-    false
-    #code here!
+    return session[:filtered_rating].nil? || session[:filtered_rating].include?(rating)
   end
   helper_method :check_box_setup
 
